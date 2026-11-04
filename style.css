@@ -437,3 +437,17 @@ footer a:hover { color: var(--green); }
   background: white;
   color: #222;
 }
+
+/* Collect / Analyze / Present pages */
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.research-card .btn{margin-top:12px}
+.chart canvas{max-height:330px}
+.chart details{margin-top:18px;padding-top:14px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+.chart summary{cursor:pointer;color:var(--green);font-weight:700}
+.source{margin-top:24px}
+.source .tablebox{margin-top:16px}
+.source table{min-width:0}
+.source td,.source th{line-height:1.6}
+.mermaid{background:#10243a;border:1px solid var(--line);border-radius:10px;padding:18px;overflow:auto;text-align:center}
+.site-header nav a{font-size:13px}
+@media(max-width:850px){.source table{min-width:620px}}
