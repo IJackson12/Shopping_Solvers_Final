@@ -51,8 +51,9 @@ function trainTree(X,y,specs) {
   function build(indices,depth) {
     let pos=0; indices.forEach(i=>pos+=y[i]); const neg=indices.length-pos;
     const weightedPos=pos/Math.max(1,totalPos), weightedNeg=neg/Math.max(1,totalNeg);
-    const prob=weightedPos/(weightedPos+weightedNeg||1);
-    const node={count:indices.length,pos,neg,prob,prediction:prob>=.5?1:0,depth};
+    const weightedProb=weightedPos/(weightedPos+weightedNeg||1);
+    const prob=pos/indices.length;
+    const node={count:indices.length,pos,neg,prob,prediction:weightedProb>=.5?1:0,depth};
     if(depth>=MAX_DEPTH||indices.length<MIN_LEAF*2||pos===0||neg===0) return node;
     const parent=weightedGini(pos,neg,totalPos,totalNeg);
     let best=null;
@@ -77,7 +78,7 @@ function trainTree(X,y,specs) {
     indices.forEach(i=>(X[i][best.feature]<=best.threshold?left:right).push(i));
     if(left.length<MIN_LEAF||right.length<MIN_LEAF) return node;
     node.feature=best.feature;node.threshold=best.threshold;node.gain=best.gain;
-    importance[best.feature]+=best.gain*(pos/Math.max(1,totalPos)+neg/Math.max(1,totalNeg))/(y.length/Math.max(1,totalPos)+y.length/Math.max(1,totalNeg));
+    importance[best.feature]+=best.gain*(pos/Math.max(1,totalPos)+neg/Math.max(1,totalNeg))/2;
     node.left=build(left,depth+1);node.right=build(right,depth+1);
     return node;
   }
