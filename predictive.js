@@ -64,7 +64,10 @@ function trainTree(X,y,specs) {
         const leftN=k+1,rightN=sorted.length-leftN;
         if(leftN<MIN_LEAF||rightN<MIN_LEAF||sorted[k].v===sorted[k+1].v) continue;
         const rightPos=pos-leftPos,rightNeg=neg-leftNeg;
-        const child=(leftN/indices.length)*weightedGini(leftPos,leftNeg,totalPos,totalNeg)+(rightN/indices.length)*weightedGini(rightPos,rightNeg,totalPos,totalNeg);
+        const leftWeight=leftPos/Math.max(1,totalPos)+leftNeg/Math.max(1,totalNeg);
+        const rightWeight=rightPos/Math.max(1,totalPos)+rightNeg/Math.max(1,totalNeg);
+        const totalWeight=leftWeight+rightWeight;
+        const child=(leftWeight/totalWeight)*weightedGini(leftPos,leftNeg,totalPos,totalNeg)+(rightWeight/totalWeight)*weightedGini(rightPos,rightNeg,totalPos,totalNeg);
         const gain=parent-child;
         if(!best||gain>best.gain) best={feature:f,threshold:(sorted[k].v+sorted[k+1].v)/2,gain};
       }
@@ -74,7 +77,7 @@ function trainTree(X,y,specs) {
     indices.forEach(i=>(X[i][best.feature]<=best.threshold?left:right).push(i));
     if(left.length<MIN_LEAF||right.length<MIN_LEAF) return node;
     node.feature=best.feature;node.threshold=best.threshold;node.gain=best.gain;
-    importance[best.feature]+=best.gain*indices.length/y.length;
+    importance[best.feature]+=best.gain*(pos/Math.max(1,totalPos)+neg/Math.max(1,totalNeg))/(y.length/Math.max(1,totalPos)+y.length/Math.max(1,totalNeg));
     node.left=build(left,depth+1);node.right=build(right,depth+1);
     return node;
   }
@@ -138,7 +141,7 @@ async function init() {
     const earlyX=train.map(r=>vectorize(r,earlySpecs)),earlyTest=test.map(r=>vectorize(r,earlySpecs));
     const fullTree=trainTree(fullX,yTrain,fullSpecs),earlyTree=trainTree(earlyX,yTrain,earlySpecs);
     const fullMetrics=evaluate(fullTree,fullTest,yTest),earlyMetrics=evaluate(earlyTree,earlyTest,yTest);
-    const buys=yTest.reduce((a,b)=>a+b,0),baseline=Math.max(buys,yTest.length-buys)/yTest.length;
+    const buys=yTest.reduce((a,b)=>a+b,0),trainingBuys=yTrain.reduce((a,b)=>a+b,0),baselineLabel=trainingBuys/yTrain.length>=.5?1:0,baseline=yTest.filter(v=>v===baselineLabel).length/yTest.length;
     $('trainCount').textContent=train.length.toLocaleString();$('testCount').textContent=test.length.toLocaleString();
     $('testPurchaseRate').textContent=pct(buys/yTest.length);$('baselineAccuracy').textContent=pct(baseline);
     showModel('full',fullTree,fullMetrics);showModel('early',earlyTree,earlyMetrics);
