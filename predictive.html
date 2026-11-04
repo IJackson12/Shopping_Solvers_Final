@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Shopping Solvers decision-tree classification experiment using UCI online shopping sessions.">
+<title>Predictive Model | Shopping Solvers</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="predictive.js" defer></script>
+</head>
+<body>
+<header class="site-header"><div class="container nav">
+<a class="logo" href="index.html">SHOPPING <span>SOLVERS ↗</span></a>
+<nav aria-label="Main navigation"><a href="index.html">Home</a><a href="collect.html">Collect</a><a href="analyze.html">Analyze</a><a href="present.html">Present</a><a href="predictive.html">Predictive Model</a></nav>
+</div></header>
+<main><section class="section"><div class="container">
+<span class="kicker">04 / PREDICTIVE CLASSIFICATION</span>
+<h1>Decision Tree <span class="green">Lab.</span></h1>
+<p class="subtitle model-intro">Train and compare two decision-tree classifiers using the UCI Online Shoppers Purchasing Intention sessions. The experiment uses a stratified 80/20 train-test split, a fixed random seed, and the same evaluation metrics for both models.</p>
+<div class="notice model-status" id="modelStatus">Loading session data and preparing the experiment…</div>
+<div class="model-warning"><strong>Important distinction:</strong> Revenue = False means the recorded session did not end in a purchase. It does not prove that a shopper added an item to a cart and abandoned checkout. This model predicts the dataset's Revenue label, not confirmed cart abandonment.</div>
+<div class="model-two">
+<article class="model-panel"><span class="kicker">MODEL A / RETROSPECTIVE</span><h2>Full-feature model</h2><p class="model-small">Includes PageValues alongside visitor type, page activity, bounce rate, exit rate, and other session fields. Useful for understanding patterns in the completed dataset, but PageValues may contain information closely associated with the purchase outcome.</p><div class="model-good">Interpret this as a retrospective classification model, not a clean early-session prediction.</div><div class="model-grid" style="grid-template-columns:repeat(2,1fr)"><div class="metric-card"><span>Accuracy</span><strong id="fullAccuracy">—</strong></div><div class="metric-card"><span>F1-score</span><strong id="fullF1">—</strong></div></div></article>
+<article class="model-panel"><span class="kicker">MODEL B / EARLY SIGNALS</span><h2>Early-prediction model</h2><p class="model-small">Excludes PageValues to reduce the risk of using a field that may reflect transaction-related information. Uses visitor type, page activity, bounce rate, exit rate, and other session attributes.</p><div class="model-good">This is the more appropriate comparison for predicting Revenue from session behavior without PageValues.</div><div class="model-grid" style="grid-template-columns:repeat(2,1fr)"><div class="metric-card"><span>Accuracy</span><strong id="earlyAccuracy">—</strong></div><div class="metric-card"><span>F1-score</span><strong id="earlyF1">—</strong></div></div></article>
+</div>
+<div class="model-panel"><h2>Model evaluation</h2><p class="model-small">Accuracy is shown with precision, recall, F1-score, specificity, and a confusion matrix. Because purchases are the minority class in this dataset, accuracy alone can be misleading. The baseline below shows the accuracy of always predicting the majority class (no purchase).</p>
+<div class="model-grid">
+<div class="metric-card"><span>Test sessions</span><strong id="testCount">—</strong></div>
+<div class="metric-card"><span>Actual purchase rate</span><strong id="testPurchaseRate">—</strong></div>
+<div class="metric-card"><span>Majority-class baseline</span><strong id="baselineAccuracy">—</strong></div>
+<div class="metric-card"><span>Training sessions</span><strong id="trainCount">—</strong></div>
+</div>
+<div class="model-two">
+<div><h3>Full-feature confusion matrix</h3><div id="fullMatrix"></div><p class="model-small">Rows are actual outcomes; columns are predicted outcomes.</p></div>
+<div><h3>Early-prediction confusion matrix</h3><div id="earlyMatrix"></div><p class="model-small">Rows are actual outcomes; columns are predicted outcomes.</p></div>
+</div>
+<div class="model-two" style="margin-top:25px">
+<div><h3>Full-feature metrics</h3><div id="fullMetrics" class="model-bars"></div></div>
+<div><h3>Early-prediction metrics</h3><div id="earlyMetrics" class="model-bars"></div></div>
+</div></div>
+<div class="model-two">
+<div class="model-panel"><h2>What influenced the tree?</h2><p class="model-small">Feature importance is based on each feature's contribution to reducing weighted Gini impurity in the fitted tree. It describes how the model used the fields; it does not prove causation.</p><div id="fullImportance" class="model-bars"></div></div>
+<div class="model-panel"><h2>Early-model feature importance</h2><p class="model-small">Compare which signals the early-prediction tree relied on after PageValues was removed.</p><div id="earlyImportance" class="model-bars"></div></div>
+</div>
+<div class="model-panel"><h2>Decision-tree rules</h2><p class="model-small">The rules below show the learned split conditions. Each leaf reports the number of training sessions and the model's estimated purchase probability in that leaf.</p><div class="model-two"><div><h3>Full-feature tree</h3><div id="fullTree" class="tree-output"></div></div><div><h3>Early-prediction tree</h3><div id="earlyTree" class="tree-output"></div></div></div></div>
+<div class="model-panel"><h2>How the experiment works</h2>
+<ol>
+<li>Load the 12,330-row UCI CSV already stored in this repository.</li>
+<li>Separate the target, Revenue, from the input features.</li>
+<li>Split the data into training and testing sets using a fixed seed and stratification, preserving the purchase/no-purchase proportions.</li>
+<li>Train a shallow CART-style decision tree using weighted Gini impurity to account for the smaller purchase class.</li>
+<li>Evaluate both models on the same held-out test sessions.</li>
+</ol>
+<p class="model-small">The tree is intentionally kept shallow and uses a minimum leaf size to reduce overfitting and keep the rules readable. Results are reproducible in the browser from the repository's CSV; no predictive score is hard-coded.</p></div>
+<div class="source"><span class="kicker">DATA AND RESEARCH SOURCES</span><h3>What these fields can tell us</h3>
+<p><strong>Visitor type:</strong> distinguishes new, returning, and other visitors. It gives context about the visitor category, but does not determine purchase intent by itself.</p>
+<p><strong>Page activity:</strong> counts and duration for administrative, informational, and product-related pages can represent how visitors explore a site.</p>
+<p><strong>Bounce and exit rates:</strong> describe session/page behavior and can help distinguish sessions with limited interaction from sessions with more navigation.</p>
+<p><strong>PageValues:</strong> a transaction-associated field in the UCI dataset. It can be informative retrospectively, but should be treated cautiously for early prediction because it may be closely tied to the purchase outcome.</p>
+<p class="model-small">Primary dataset: Sakar, C., & Kastro, Y. (2018). <em>Online shoppers purchasing intention dataset</em>. UCI Machine Learning Repository. <a href="https://doi.org/10.24432/C5F88Q" target="_blank" rel="noopener">https://doi.org/10.24432/C5F88Q</a>. Dataset documentation: <a href="https://archive.ics.uci.edu/dataset/468/online+shoppers+purchasing+intention+dataset" target="_blank" rel="noopener">UCI dataset page</a>.</p>
+<p class="model-small">Research note: this page uses the UCI dataset as the source of both predictors and Revenue labels. External research is used to explain the behavioral context, not to create extra labeled records or inflate the model's sample size.</p></div>
+<a class="btn" href="present.html">Back to project findings ↗</a>
+</div></section></main>
+<footer><div class="container"><strong>SHOPPING SOLVERS</strong><p>IT 4793 · Kennesaw State University · Fall 2026</p><a href="https://github.com/IJackson12/Test-repository" target="_blank" rel="noopener noreferrer">Test Repository ↗</a></div></footer>
+</body></html>
