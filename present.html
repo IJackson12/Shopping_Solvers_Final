@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Shopping Solvers data visualization and findings"><title>Present | Shopping Solvers</title><link rel="stylesheet" href="style.css"><script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script><script src="present.js" defer></script></head><body>
+<header class="site-header"><div class="container nav"><a class="logo" href="index.html">SHOPPING <span>SOLVERS ↗</span></a><nav aria-label="Main navigation"><a href="index.html">Home</a><a href="collect.html">Collect</a><a href="analyze.html">Analyze</a><a href="present.html">Present</a></nav></div></header><main><section class="section"><div class="container"><span class="kicker">03 / PRESENT</span><h1>Data <span class="green">Visualization.</span></h1><p class="subtitle">Use interactive charts and tables to communicate patterns and explore predictive classification if supported by the dataset.</p>
+<div class="grid3"><article class="research-card"><span>RESULT 01</span><h3>Purchase outcomes</h3><p>1,908 of 12,330 sessions resulted in a purchase (15.47%). 10,422 sessions did not result in a purchase (84.53%).</p></article><article class="research-card"><span>RESULT 02</span><h3>Visitor comparison</h3><p>New visitors had a 24.91% purchase rate, compared with 13.93% for returning visitors in this dataset.</p></article><article class="research-card"><span>RESULT 03</span><h3>Day type comparison</h3><p>Weekend sessions had a 17.40% purchase rate, compared with 14.89% for weekday sessions.</p></article></div>
+<div class="source"><span class="kicker">FLOWCHART 01</span><h3>Shopper journey (conceptual)</h3><p class="note">This is a conceptual ecommerce journey. The UCI dataset does not record every cart and checkout event shown here.</p><pre class="mermaid">flowchart TD
+ A([Shopper visits website]) --> B[Browses products]
+ B --> C[Views product pages]
+ C --> D{Makes a purchase?}
+ D -->|Yes| E[Purchase completed]
+ D -->|No| F[Session ends without purchase]
+ E --> G[Session outcome recorded]
+ F --> G
+ G --> H[Analyze behavior patterns]</pre></div>
+<div class="source"><span class="kicker">FLOWCHART 02</span><h3>Shopping Solvers analytics process</h3><pre class="mermaid">flowchart TD
+ A[UCI CSV dataset] --> B[Load and prepare data]
+ B --> C[Calculate descriptive statistics]
+ C --> D[Compare visitor and session behavior]
+ D --> E[Create charts and tables]
+ E --> F[Present findings]
+ G[Google Analytics demo] --> H[Reference for ecommerce event tracking]
+ I[Baymard research] --> J[External checkout usability context]
+ H --> F
+ J --> F</pre></div>
+<div class="source"><span class="kicker">PREDICTIVE CLASSIFICATION</span><h3>Decision-tree model: next step</h3><p>A decision tree could use session attributes such as visitor type, page activity, bounce rate, exit rate, and page values to classify the Revenue outcome. The current website presents descriptive analysis; it does not yet run a trained predictive model.</p><div class="notice">To report a valid model result, the project still needs a documented train/test split, model training, and evaluation using a confusion matrix, accuracy, precision, recall, and F1-score. No predictive accuracy is claimed on this page.</div></div>
+<div class="source"><span class="kicker">EXTERNAL RESEARCH CONTEXT</span><h3>Checkout usability and cart abandonment</h3><p>Baymard's research provides context for why shoppers may abandon checkout. Its abandonment statistics are external survey findings and should not be combined with the UCI no-purchase session count.</p><div class="hero-actions"><a class="btn outline" href="https://baymard.com/blog/ecommerce-checkout-usability-report-and-benchmark" target="_blank" rel="noopener">Baymard abandonment research ↗</a><a class="btn outline" href="https://baymard.com/research/checkout-usability" target="_blank" rel="noopener">Checkout usability research ↗</a></div></div>
+<a class="btn" href="index.html">Return to Homepage ↗</a></div></section></main><footer><div class="container"><strong>SHOPPING SOLVERS</strong><p>IT 4793 · Kennesaw State University · Fall 2026</p><a href="https://github.com/IJackson12/Test-repository" target="_blank" rel="noopener noreferrer">Test Repository ↗</a></div></footer></body></html>
