@@ -1,12 +1,11 @@
 
 // SHOPPING SOLVERS - MILESTONE 2
-// Synthetic demonstration data.
-// These are not actual UCI dataset records.
+// Loads actual UCI Online Shoppers Purchasing Intention records from data/analytics.json.
 
 const $ = id => document.getElementById(id);
 
 const visitorFilter = $("visitor");
-const dayFilter = $("device");
+const dayFilter = $("dayType");
 const searchInput = $("search");
 
 let shopperData = [];
