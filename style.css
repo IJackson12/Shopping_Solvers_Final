@@ -451,3 +451,32 @@ footer a:hover { color: var(--green); }
 .mermaid{background:#10243a;border:1px solid var(--line);border-radius:10px;padding:18px;overflow:auto;text-align:center}
 .site-header nav a{font-size:13px}
 @media(max-width:850px){.source table{min-width:620px}}
+
+
+/* Predictive model page */
+.model-intro { max-width: 850px; }
+.model-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin:22px 0; }
+.metric-card { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:20px; }
+.metric-card span { display:block; color:var(--muted); font-size:12px; }
+.metric-card strong { display:block; font-size:28px; margin:10px 0 5px; }
+.model-panel { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:24px; margin:20px 0; }
+.model-panel h2,.model-panel h3 { margin-top:0; }
+.model-two { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.model-bars { display:grid; gap:12px; margin-top:18px; }
+.model-bar-row { display:grid; grid-template-columns:minmax(130px, 1fr) 3fr 55px; gap:12px; align-items:center; font-size:12px; }
+.model-track { height:12px; background:#294057; border-radius:20px; overflow:hidden; }
+.model-fill { height:100%; background:var(--green); border-radius:20px; }
+.model-fill.blue { background:var(--blue); }
+.confusion { width:100%; border-collapse:collapse; margin-top:12px; min-width:0; }
+.confusion th,.confusion td { text-align:center; padding:12px; border:1px solid var(--line); }
+.confusion th { background:var(--panel2); }
+.tree-output { display:grid; gap:8px; font-family:ui-monospace, SFMono-Regular, Consolas, monospace; font-size:12px; }
+.tree-node { padding:10px 12px; border-left:3px solid var(--green); background:#0b1a2a; border-radius:5px; line-height:1.6; overflow-wrap:anywhere; }
+.tree-node.leaf { border-left-color:var(--blue); }
+.model-warning { background:#382d1b; border:1px solid #80663b; color:#f7dfae; padding:14px; border-radius:8px; font-size:13px; line-height:1.7; margin:16px 0; }
+.model-good { background:#1b352f; border:1px solid #496e4d; color:#d5f3b5; padding:14px; border-radius:8px; font-size:13px; line-height:1.7; margin:16px 0; }
+.model-small { color:var(--muted); font-size:12px; line-height:1.7; }
+.model-status { margin:18px 0; }
+.model-button { border:0; }
+@media(max-width:850px){.model-grid{grid-template-columns:repeat(2,1fr)}.model-two{grid-template-columns:1fr}}
+@media(max-width:560px){.model-grid{grid-template-columns:1fr 1fr}.model-bar-row{grid-template-columns:100px 1fr 45px;gap:7px}.metric-card strong{font-size:22px}}
